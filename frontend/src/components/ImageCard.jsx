@@ -1,17 +1,18 @@
 import React from 'react'
 import { Button, Card, Container, Row, Col } from 'react-bootstrap'
 
+import Welcome from './Welcome'
+
 const ImageCard = ({ images, deleteImage }) => {
     return (
-        <Container className='mt-5'>
+        <Container className='mt-5 text-center'>
             {images.length ? (
                 <Row xs={1} md={2} lg={3} xl={4}>
                     {images.map((image, i) => (
                         <Col key={i} className='my-auto'>
                             <Card
                                 className='shadow p-3 mb-5 bg-white rounded'
-                                style={{ width: '18rem' }}
-                            >
+                                style={{ width: '18rem' }}>
                                 <Card.Img
                                     variant='top'
                                     src={image.urls.small}
@@ -24,8 +25,7 @@ const ImageCard = ({ images, deleteImage }) => {
 
                                     <Button
                                         variant='primary'
-                                        onClick={() => deleteImage(image.id)}
-                                    >
+                                        onClick={() => deleteImage(image.id)}>
                                         Delete
                                     </Button>
                                 </Card.Body>
@@ -34,7 +34,7 @@ const ImageCard = ({ images, deleteImage }) => {
                     ))}
                 </Row>
             ) : (
-                <h1 className='text-center'>No Images</h1>
+                <Welcome />
             )}
         </Container>
     )

@@ -9,12 +9,14 @@
 #           -> first 5050  : Local Machine Port
 #           -> second 5050 : Docker Container Port
 
+# docker start container_name       => Start container in background
 # docker ps                         => Port bindings
 # docker exec -it ps_name bash      => Get container access for an image
 #           -> -it : interactive terminal
 
 # INSIDE CONTAINER
 # ps -x     => Process running
+
 # ---------------------------------------------------------------------------- #
 
 FROM python:3.9

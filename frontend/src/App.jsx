@@ -1,14 +1,14 @@
-import { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { useState } from 'react'
+import { Alert, Button } from 'react-bootstrap'
 
 import Header from './components/Header'
 import Search from './components/Search'
 import ImageCard from './components/ImageCard'
 
-import { Alert, Button } from 'react-bootstrap'
+const API_URL = process.env.API_URL || 'http://localhost:5050'
 
-const UNSPLASH_KEY = process.env.REACT_APP_UNSPLASH_KEY
-
+// APP functional component
 function App() {
     const [word, setWord] = useState('')
     const [images, setImages] = useState([])
@@ -18,7 +18,7 @@ function App() {
     const handleSearchSubmit = (e) => {
         e.preventDefault()
 
-        const URL = `https://api.unsplash.com/photos/random?query=${word}&client_id=${UNSPLASH_KEY}`
+        const URL = `${API_URL}/new-image?query${word}`
 
         fetch(URL)
             .then((res) => res.json())
@@ -32,10 +32,9 @@ function App() {
         setWord('')
     }
 
-    // Delete image
+    // Delete image Pop-Up
     const handleDeleteImage = (id) => {
         setImages(images.filter((image) => image.id !== id))
-
         setShow(1)
     }
 

@@ -1,17 +1,61 @@
-/* -------------------------------------------------------------------------- */
-
+# --------------------------
+# * Run in specific folders
+# --------------------------
 # docker-compose up     => Compose multiple containers to work together
-
-/* -------------------------------------------------------------------------- */
+# docker-compose up -d  => Compose multiple containers to work together in detached mode
+# docker-compose down   => Down running containers
 
 version: '3'
 services:
+    # Frontend
     frontend:
-        build: ./frontend
+        restart: always # In-case of failure always restart
+        build: ./frontend # Build folder
         ports:
-            - '3000:3000'
+            - '3000:3000' # Default port
 
+        # Volumes allows local to container change updation
+        volumes:
+            - /app/node_modules # Not over-ridden
+            - ./frontend:/app # Over-ridden
+
+        environment:
+            - CHOKIDAR_USEPOLLING=true # In-case if synchronization does not work properly
+
+    # Backend
     api:
+        restart: always
         build: ./backend
         ports:
             - '5050:5050'
+
+        volumes:
+            - ./backend:/app
+
+    # MongoDB - Host
+    mongo:
+        image: mongo
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: example
+        volumes:
+            - mongodb_data:/data/db # Load from docker
+
+    # MongoDB express - Communication / GUI
+    mongo-express:
+        image: mongo-express
+        restart: always
+        ports:
+            - 8081:8081
+        environment:
+            ME_CONFIG_MONGODB_SERVER: mongo
+            ME_CONFIG_MONGODB_ADMINUSERNAME: root
+            ME_CONFIG_MONGODB_ADMINPASSWORD: example
+
+        # Depends on some other container
+        depends_on:
+            - mongo
+
+# Custom volumes
+volumes: mongodb_data
